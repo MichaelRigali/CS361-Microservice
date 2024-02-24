@@ -30,14 +30,24 @@ def get_valid_recipes():
 
 # Another endpoint defined with the HTTP method 'POST'. 
 # This endpoint is used to send valid recipes
+# Another endpoint defined with the HTTP method 'POST'. 
+# This endpoint is used to send valid recipes
 @app.route('/send-recipes', methods=['POST'])
 def send_valid_recipes():
     data = request.json
-    # Process the data (save it, perform any necessary operations, etc.)
-    # For demonstration purposes, we'll just print it
-    print("Received valid recipes:", data)
-    # Returns a JSON response showing a sucessful receipt of data
-    return jsonify({"message": "Received valid recipes"}), 200
+    # Extract the ingredients from the received data
+    received_ingredients = data.get('ingredients', [])
+    
+    if received_ingredients:
+        # Filter recipes based on the received ingredients
+        matched_recipe = next((recipe for recipe in recipes if set(recipe['ingredients']) == set(received_ingredients)), None)
+        if matched_recipe:
+            # Return the matched recipe
+            return jsonify(matched_recipe)
+        else:
+            return jsonify({"message": "No matching recipe found"}), 404
+    else:
+        return jsonify({"error": "No ingredients provided"}), 400
 
 # Runs the application
 if __name__ == '__main__':
