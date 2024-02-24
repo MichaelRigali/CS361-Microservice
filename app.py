@@ -5,7 +5,7 @@ from flask import Flask, jsonify, request
 app = Flask(__name__)
 
 # Recipe example data, it's a list of dictionaries containing dummy recipe data
-# Each dictionaray represents a recipe with a name and a list of ingredients
+# Each dictionary represents a recipe with a name and a list of ingredients
 recipes = [
     {"name": "Pasta Carbonara", "ingredients": ["pasta", "eggs", "bacon", "cheese"]},
     {"name": "Caprese Salad", "ingredients": ["tomatoes", "mozzarella", "basil", "olive oil"]}
@@ -30,8 +30,6 @@ def get_valid_recipes():
 
 # Another endpoint defined with the HTTP method 'POST'. 
 # This endpoint is used to send valid recipes
-# Another endpoint defined with the HTTP method 'POST'. 
-# This endpoint is used to send valid recipes
 @app.route('/send-recipes', methods=['POST'])
 def send_valid_recipes():
     data = request.json
@@ -42,8 +40,8 @@ def send_valid_recipes():
         # Filter recipes based on the received ingredients
         matched_recipe = next((recipe for recipe in recipes if set(recipe['ingredients']) == set(received_ingredients)), None)
         if matched_recipe:
-            # Return the matched recipe
-            return jsonify(matched_recipe)
+            # Return only the name of the matched recipe
+            return jsonify({"name": matched_recipe['name']})
         else:
             return jsonify({"message": "No matching recipe found"}), 404
     else:
