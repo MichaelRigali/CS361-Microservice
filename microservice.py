@@ -1,7 +1,9 @@
-# Import framework followed by necessary modules
+# microservice.py
+
+# Import necessary modules
 from flask import Flask, jsonify, request
 
-# Creates an instance of the application
+# Create an instance of the Flask application
 app = Flask(__name__)
 
 # Recipe example data, it's a list of dictionaries containing dummy recipe data
@@ -11,25 +13,7 @@ recipes = [
     {"name": "Caprese Salad", "ingredients": ["tomatoes", "mozzarella", "basil", "olive oil"]}
 ]
 
-# An endpoint defined by HTTP method 'GET'. 
-# This is the endpoint used to retrieve valid recipes based on the ingredients
-# provided as query parameters. 
-@app.route('/get-recipes', methods=['GET'])
-def get_valid_recipes():
-    # Extract ingredients from the request query parameters
-    ingredients = request.args.getlist('ingredients')
-    
-    if ingredients:
-        # Filter recipes based on the provided ingredients
-        matching_recipes = [recipe for recipe in recipes if all(ingredient in recipe['ingredients'] for ingredient in ingredients)]
-        # Return the valid recipes in the response body as JSON
-        return jsonify(matching_recipes)
-    else:
-        # If no ingredients are provided, return this error message
-        return jsonify({"error": "No ingredients provided"}), 400
-
-# Another endpoint defined with the HTTP method 'POST'. 
-# This endpoint is used to send valid recipes
+# Define the route for the endpoint to send recipes
 @app.route('/send-recipes', methods=['POST'])
 def send_valid_recipes():
     data = request.json
@@ -49,4 +33,6 @@ def send_valid_recipes():
 
 # Runs the application
 if __name__ == '__main__':
-    app.run(debug=True)
+    # Run the Flask application on Heroku
+    # The host needs to be set to '0.0.0.0' for Heroku deployment
+    app.run(debug=True, host='0.0.0.0')
