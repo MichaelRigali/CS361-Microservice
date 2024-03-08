@@ -1,5 +1,3 @@
-# microservice.py
-
 # Import necessary modules
 from flask import Flask, jsonify, request
 
@@ -57,8 +55,8 @@ def send_valid_recipes():
         # Filter recipes based on the received ingredients
         matched_recipe = next((recipe for recipe in recipes if set(recipe['ingredients']) == set(received_ingredients)), None)
         if matched_recipe:
-            # Return only the name of the matched recipe
-            return jsonify({"name": matched_recipe['name']})
+            # Return the name and instructions of the matched recipe
+            return jsonify({"name": matched_recipe['name'], "instructions": matched_recipe['instructions']})
         else:
             return jsonify({"message": "No matching recipe found"}), 404
     else:
@@ -66,6 +64,4 @@ def send_valid_recipes():
 
 # Runs the application
 if __name__ == '__main__':
-    # Run the Flask application on Heroku
-    # The host needs to be set to '0.0.0.0' for Heroku deployment
     app.run(debug=True, host='0.0.0.0')
