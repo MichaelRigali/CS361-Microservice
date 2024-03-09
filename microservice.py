@@ -63,7 +63,6 @@ def send_valid_recipes():
     else:
         return jsonify({"error": "No ingredients provided"}), 400
 
-
 # Runs the application
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
