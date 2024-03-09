@@ -47,13 +47,16 @@ recipes = [
 # Define the route for the endpoint to send recipes
 @app.route('/send-recipes', methods=['POST'])
 def send_valid_recipes():
+    print("here")
     data = request.json
+    print(data)
     # Extract the ingredients from the received data
     received_ingredients = data.get('ingredients', [])
     
     if received_ingredients:
         # Filter recipes based on the received ingredients
         matched_recipe = next((recipe for recipe in recipes if all(ingredient in recipe['ingredients'] for ingredient in received_ingredients)), None)
+        print(matched_recipe)
         if matched_recipe:
             # Return the name and instructions of the matched recipe in JSON format
             response_data = {"name": matched_recipe['name'], "instructions": matched_recipe['instructions']}
@@ -62,6 +65,8 @@ def send_valid_recipes():
             return jsonify({"message": "No matching recipe found"}), 404
     else:
         return jsonify({"error": "No ingredients provided"}), 400
+
+print("server started")
 
 # Runs the application
 if __name__ == '__main__':
