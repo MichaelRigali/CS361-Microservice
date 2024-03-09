@@ -55,12 +55,14 @@ def send_valid_recipes():
         # Filter recipes based on the received ingredients
         matched_recipe = next((recipe for recipe in recipes if all(ingredient in recipe['ingredients'] for ingredient in received_ingredients)), None)
         if matched_recipe:
-            # Return the name and instructions of the matched recipe
-            return jsonify({"name": matched_recipe['name'], "instructions": matched_recipe['instructions']})
+            # Return the name and instructions of the matched recipe in JSON format
+            response_data = {"name": matched_recipe['name'], "instructions": matched_recipe['instructions']}
+            return jsonify(response_data)
         else:
             return jsonify({"message": "No matching recipe found"}), 404
     else:
         return jsonify({"error": "No ingredients provided"}), 400
+
 
 # Runs the application
 if __name__ == '__main__':
