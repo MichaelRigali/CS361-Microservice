@@ -53,7 +53,7 @@ def send_valid_recipes():
     
     if received_ingredients:
         # Filter recipes based on the received ingredients
-        matched_recipe = next((recipe for recipe in recipes if set(recipe['ingredients']) == set(received_ingredients)), None)
+        matched_recipe = next((recipe for recipe in recipes if all(ingredient in recipe['ingredients'] for ingredient in received_ingredients)), None)
         if matched_recipe:
             # Return the name and instructions of the matched recipe
             return jsonify({"name": matched_recipe['name'], "instructions": matched_recipe['instructions']})
